@@ -3,11 +3,13 @@ import {
   createProblem,
   getAllProblems,
   getProblemById,
-  deleteProblem
+  deleteProblem,
+  getAllTopics,
 } from "../controller/problemController.js";
 
 const router = express.Router();
 
+router.get("/topics", getAllTopics);
 router.post("/problems", createProblem);
 router.get("/problems", getAllProblems);
 router.get("/problems/:id", getProblemById);

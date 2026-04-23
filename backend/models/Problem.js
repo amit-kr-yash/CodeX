@@ -41,15 +41,30 @@ const problemSchema = new mongoose.Schema(
       default: "easy"
     },
 
+    topics: {
+      type: [String],
+      required: true,
+      index: true
+    },
+
     boilerplate: {
       type: boilerplateSchema,
       required: true
     },
 
     testCases: {
-      type: [testCaseSchema],
-      required: true
-    }
+  type: [testCaseSchema],
+  required: true,
+  validate: {
+    validator: function (arr) {
+      return arr.every(tc =>
+        typeof tc.input === "string" &&
+        typeof tc.expected === "string"
+      );
+    },
+    message: "Invalid test case format"
+  }
+}
   },
   {
     timestamps: true

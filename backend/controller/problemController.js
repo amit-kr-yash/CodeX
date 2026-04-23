@@ -13,9 +13,18 @@ export const createProblem = async (req, res) => {
 // Get All Problems (for list page)
 export const getAllProblems = async (req, res) => {
   try {
-    const problems = await Problem.find().select(
-      "_id title difficulty"
+    const { topic } = req.query;
+
+    let filter = {};
+
+    if (topic) {
+      filter.topics = topic; // matches if topic exists in array
+    }
+
+    const problems = await Problem.find(filter).select(
+      "_id title difficulty topics"
     );
+
     res.json(problems);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -62,6 +71,15 @@ export const deleteProblem = async (req, res) => {
       deletedId: id
     });
 
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+export const getAllTopics = async (req, res) => {
+  try {
+    const topics = await Problem.distinct("topics");
+    res.json(topics);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
