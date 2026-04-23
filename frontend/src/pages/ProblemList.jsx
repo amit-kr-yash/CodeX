@@ -8,6 +8,9 @@ export default function ProblemList() {
   const [topic, setTopic] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const navigate = useNavigate();
 
   // Fetch topics
@@ -19,21 +22,26 @@ export default function ProblemList() {
 
   // Fetch problems
   useEffect(() => {
-    const fetchProblems = async () => {
-      setLoading(true);
-      try {
-        const url = topic ? `/problems?topic=${topic}` : "/problems";
-        const res = await API.get(url);
-        setProblems(res.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchProblems = async () => {
+    setLoading(true);
+    try {
+      const url = topic
+        ? `/problems?topic=${topic}&page=${page}&limit=15`
+        : `/problems?page=${page}&limit=15`;
 
-    fetchProblems();
-  }, [topic]);
+      const res = await API.get(url);
+
+      setProblems(res.data.problems);
+      setTotalPages(res.data.totalPages);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchProblems();
+}, [topic, page]);
 
   return (
     <div className="max-w-5xl mx-auto min-h-screen p-6 bg-gray-50 text-gray-800">
@@ -137,6 +145,28 @@ export default function ProblemList() {
 
           </tbody>
         </table>
+        <div className="flex justify-center items-center gap-4 mt-6">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 1))}
+            disabled={page === 1}
+            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+
+          <span className="text-gray-700">
+            Page {page} of {totalPages}
+          </span>
+
+          <button
+            onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
+            disabled={page === totalPages}
+            className="px-4 py-2 bg-gray-200 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+
+        </div>
       </div>
     </div>
   );

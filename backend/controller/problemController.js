@@ -13,19 +13,28 @@ export const createProblem = async (req, res) => {
 // Get All Problems (for list page)
 export const getAllProblems = async (req, res) => {
   try {
-    const { topic } = req.query;
+    const { topic, page = 1, limit = 15 } = req.query;
 
-    let filter = {};
+    const pageNum = parseInt(page);
+    const limitNum = parseInt(limit);
 
-    if (topic) {
-      filter.topics = topic; // matches if topic exists in array
-    }
+    const filter = {};
+    if (topic) filter.topics = topic;
 
-    const problems = await Problem.find(filter).select(
-      "_id title difficulty topics"
-    );
+    const problems = await Problem.find(filter)
+      .select("_id title difficulty topics")
+      .skip((pageNum - 1) * limitNum)
+      .limit(limitNum);
 
-    res.json(problems);
+    const total = await Problem.countDocuments(filter);
+
+    res.json({
+      problems,
+      total,
+      currentPage: pageNum,
+      totalPages: Math.ceil(total / limitNum)
+    });
+
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
