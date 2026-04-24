@@ -11,17 +11,6 @@ const testCaseSchema = new mongoose.Schema({
   }
 });
 
-const boilerplateSchema = new mongoose.Schema({
-  java: {
-    type: String,
-    required: true
-  },
-  python: {
-    type: String,
-    required: true
-  }
-});
-
 const problemSchema = new mongoose.Schema(
   {
     title: {
@@ -45,11 +34,6 @@ const problemSchema = new mongoose.Schema(
       type: [String],
       required: true,
       index: true
-    },
-
-    boilerplate: {
-      type: boilerplateSchema,
-      required: true
     },
 
     testCases: {

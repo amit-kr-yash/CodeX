@@ -1,4 +1,6 @@
 import Problem from "../models/Problem.js";
+import bp_code from "../utils/bp_code.js";
+const {Java, Python} = bp_code;
 
 // Create Problem
 export const createProblem = async (req, res) => {
@@ -57,7 +59,7 @@ export const getProblemById = async (req, res) => {
       title: problem.title,
       description: problem.description,
       difficulty: problem.difficulty,
-      starterCode: problem.boilerplate[lang]
+      starterCode: (lang === "java") ? Java:Python
     });
 
   } catch (err) {

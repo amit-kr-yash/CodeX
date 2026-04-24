@@ -1,7 +1,9 @@
 import axios from "axios";
 import Problem from "../models/Problem.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
-const JUDGE0_URL = "http://52.66.215.252:2358";
+const JUDGE0_URL = process.env.JUDGE0_URL;
 
 // helper
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -55,7 +57,7 @@ export const submitCode = async (req, res) => {
 
       const token = submission.data.token;
 
-      // 🔁 Poll result
+      //Poll result
       let result;
       while (true) {
         const res2 = await axios.get(
