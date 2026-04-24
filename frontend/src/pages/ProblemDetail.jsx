@@ -155,7 +155,7 @@ export default function ProblemDetail() {
                     {/* ERROR DISPLAY */}
                     {r.status === "Error" && (
                       <p className="text-yellow-400">
-                        Error: {r.actual}
+                        Error: {r.error}
                       </p>
                     )}
 

@@ -15,7 +15,7 @@ export const submitCode = async (req, res) => {
   try {
     const { problemId, source_code, language } = req.body;
 
-    // 🔹 Map language to Judge0 IDs
+    // Map language to Judge0 IDs
     const languageMap = {
       java: 62,
       python: 71
@@ -27,7 +27,7 @@ export const submitCode = async (req, res) => {
       return res.status(400).json({ error: "Unsupported language" });
     }
 
-    // 🔹 Fetch problem
+    // Fetch problem
     const problem = await Problem.findById(problemId);
 
     if (!problem) {
@@ -39,7 +39,7 @@ export const submitCode = async (req, res) => {
     let passed = 0;
     let results = [];
 
-    // 🔁 Loop test cases
+    // Loop test cases
     for (let i = 0; i < testCases.length; i++) {
       const { input, expected } = testCases[i];
 
@@ -69,7 +69,7 @@ export const submitCode = async (req, res) => {
         await sleep(500);
       }
 
-      // 🔹 Handle runtime / compile error
+      //Handle runtime / compile error
       if (result.stderr || result.compile_output) {
         results.push({
         status: "Error",
@@ -93,7 +93,7 @@ export const submitCode = async (req, res) => {
       });
     }
 
-    // 🎯 Final result
+    // Final result
     res.json({
       total: testCases.length,
       passed,
