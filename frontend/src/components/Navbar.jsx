@@ -5,11 +5,15 @@ import { useState, useEffect } from "react";
 export default function Navbar() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   // Check if user is logged in
   useEffect(() => {
     API.get("/user/profile")
-      .then(() => setLoggedIn(true))
+      .then((res) => {
+        setLoggedIn(true);
+        setUserRole(res.data.role);
+      })
       .catch((err) => {
         if (err.response?.status === 401) {
           setLoggedIn(false);
@@ -50,6 +54,16 @@ export default function Navbar() {
           >
             Problems
           </button>
+
+          {/* ADMIN DASHBOARD */}
+          {loggedIn && userRole === "admin" && (
+            <button
+              onClick={() => navigate("/admin")}
+              className="hover:text-yellow-400 font-semibold"
+            >
+              🛠️ Admin Dashboard
+            </button>
+          )}
 
           {/* <button
             onClick={() => navigate("/about")}

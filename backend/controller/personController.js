@@ -10,6 +10,7 @@ export const getProfile = async (req, res) => {
     res.json({
       username: user.username,
       email: user.email,
+      role: user.role,
       solvedCount: user.solvedProblems.length,
       solvedProblems: user.solvedProblems,
       submissions: user.submissions
