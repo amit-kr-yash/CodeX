@@ -7,12 +7,17 @@ import {
   getAllTopics,
 } from "../controller/problemController.js";
 
+import {adminOnly} from "../middleware/adminMiddleware.js"
+import {authMiddleware} from "../middleware/authMiddleware.js"
+
 const router = express.Router();
 
 router.get("/topics", getAllTopics);
-router.post("/problems", createProblem);
+
 router.get("/problems", getAllProblems);
 router.get("/problems/:id", getProblemById);
-router.delete("/problems/:id", deleteProblem);
+
+router.post("/problems", authMiddleware, adminOnly, createProblem);
+router.delete("/problems/:id", authMiddleware, adminOnly, deleteProblem);
 
 export default router;

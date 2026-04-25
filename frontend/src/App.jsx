@@ -1,17 +1,14 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./components/Layout";
-import ProblemList from "./pages/ProblemList";
-import ProblemDetail from "./pages/ProblemDetail";
+import { BrowserRouter, useRoutes } from "react-router-dom";
+import { appRoutes } from "./routes";
+
+function AppRoutes() {
+  return useRoutes(appRoutes);
+}
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<ProblemList />} />
-          <Route path="/problem/:id" element={<ProblemDetail />} />
-        </Route>
-      </Routes>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

@@ -3,6 +3,8 @@ import Problem from "../models/Problem.js";
 import dotenv from 'dotenv';
 dotenv.config();
 
+import Person from "../models/Person.js";
+
 const JUDGE0_URL = process.env.JUDGE0_URL;
 
 // helper
@@ -95,12 +97,33 @@ export const submitCode = async (req, res) => {
       });
     }
 
+    const userId = req.user.id;
+    const finalStatus = passed === testCases.length ? "Accepted" : "Wrong Answer";
+    //Store submission
+    await Person.findByIdAndUpdate(userId, {
+      $push: {
+        submissions: {
+          problemId,
+          code: source_code,
+          language,
+          status: finalStatus,
+          createdAt: new Date()
+        }
+      }
+    });
+
+    //Mark as solved (only if Accepted)
+    if (finalStatus === "Accepted") {
+      await Person.findByIdAndUpdate(userId, {
+        $addToSet: { solvedProblems: problemId }
+      });
+    }
+
     // Final result
     res.json({
       total: testCases.length,
       passed,
-      status:
-        passed === testCases.length ? "Accepted" : "Wrong Answer",
+      status: finalStatus,
       results
     });
 

@@ -63,10 +63,7 @@ export default mongoose.model("Problem", problemSchema);
 //   "title": "Sum of Two Numbers",
 //   "description": "Given two integers, return their sum.",
 //   "difficulty": "easy",
-//   "boilerplate": {
-//     "java": "public class Main { public static void main(String[] args) { } }",
-//     "python": "def main():\n    pass\n\nif __name__ == '__main__':\n    main()"
-//   },
+//   "topics" : ["array", "hashmap"]
 //   "testCases": [
 //     { "input": "2 3", "expected": "5" },
 //     { "input": "10 20", "expected": "30" }
