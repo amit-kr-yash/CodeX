@@ -15,7 +15,7 @@ export const createProblem = async (req, res) => {
 // Get All Problems (for list page)
 export const getAllProblems = async (req, res) => {
   try {
-    const { topic, page = 1, limit = 15 } = req.query;
+    const { topic, page = 1, limit = 10 } = req.query;
 
     const pageNum = parseInt(page);
     const limitNum = parseInt(limit);
@@ -87,7 +87,7 @@ export const deleteProblem = async (req, res) => {
   }
 };
 
-export const getAllTopics = async (req, res) => {
+export const getAllTopics = async (req, res) => {  //finding distinct topics for filter in UI
   try {
     const topics = await Problem.distinct("topics");
     res.json(topics);

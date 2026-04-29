@@ -24,8 +24,8 @@ export default function ProblemList() {
       setLoading(true);
       try {
         const url = topic
-          ? `/problems?topic=${topic}&page=${page}&limit=15`
-          : `/problems?page=${page}&limit=15`;
+          ? `/problems?topic=${topic}&page=${page}&limit=1`
+          : `/problems?page=${page}&limit=10`;
 
         const res = await API.get(url);
 
